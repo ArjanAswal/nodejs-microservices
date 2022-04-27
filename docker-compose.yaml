@@ -8,20 +8,14 @@ services:
       - "5432:5432"
     volumes:
       - data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
 
   rabbitmq:
-    image: rabbitmq:3.10-rc-alpine
+    image: rabbitmq:3.10-rc-management-alpine
     ports:
       # AMQP protocol port
       - "5672:5672"
       # HTTP management UI
       - "15672:15672"
-    environment:
-      - RABBITMQ_DEFAULT_USER=myuser
-      - RABBITMQ_DEFAULT_PASS=mypassword
 
   products:
     build:
