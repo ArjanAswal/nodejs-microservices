@@ -17,6 +17,24 @@ services:
       # HTTP management UI
       - "15672:15672"
 
+  auth:
+    build:
+      context: ./auth
+      args:
+        - NODE_ENV=development
+      target: dev
+    ports:
+      - "3002:3000"
+    volumes:
+      - ./auth:/app/
+    environment:
+      - SERVICE=auth
+    env_file:
+      - ./auth/.env
+    depends_on:
+      - postgresql
+      - rabbitmq
+
   products:
     build:
       context: ./products
@@ -25,16 +43,12 @@ services:
       target: dev
     ports:
       - "3001:3000"
-      # debug port
-      - "9229:9229"
     volumes:
       - ./products:/app/
     environment:
       - SERVICE=products
     env_file:
       - ./products/.env
-    healthcheck:
-      disable: true
     depends_on:
       - postgresql
       - rabbitmq
