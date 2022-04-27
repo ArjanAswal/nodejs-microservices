@@ -38,19 +38,17 @@ app.post('/signin', async (req, res) => {
     return res.status(404).json({ error: 'User not found' });
   }
   if (await bcrypt.compare(password, user.password)) {
-    res.status(200).json({ name: user.name, email });
+    const payload = {
+      email: user.email,
+      name: user.name,
+    };
+    jwt.sign(payload, process.env.JWT_SECRET, (err, token) => {
+      if (err) console.log(err);
+      res.status(200).json({ token, name: user.name, email });
+    });
   } else {
     res.status(401).json({ error: 'Unauthorized' });
   }
-
-  const payload = {
-    email: user.email,
-    name: user.name,
-  };
-  jwt.sign(payload, process.env.JWT_SECRET, (err, token) => {
-    if (err) console.log(err);
-    res.status(200).json({ token, name: user.name, email });
-  });
 });
 
 sequelize.sync();

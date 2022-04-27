@@ -1,7 +1,7 @@
 const express = require('express');
 require('express-async-errors');
 const sequelize = require('./database');
-
+const isAuthenticated = require('./isAuthenticated');
 const Product = require('./product.model');
 
 const app = express();
@@ -20,7 +20,7 @@ app.get('/products', async (req, res) => {
   res.status(200).json(results);
 });
 
-app.post('/products', async (req, res) => {
+app.post('/products', isAuthenticated, async (req, res) => {
   const { name, price, description, imageURL } = req.body;
 
   const product = await Product.create({
@@ -28,6 +28,7 @@ app.post('/products', async (req, res) => {
     price,
     description,
     imageURL,
+    creator: req.user.email,
   });
 
   res.status(200).json(product);
