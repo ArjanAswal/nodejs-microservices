@@ -24,7 +24,7 @@ services:
         - NODE_ENV=development
       target: dev
     ports:
-      - "3002:3000"
+      - "3001:3001"
     volumes:
       - ./auth:/app/
     environment:
@@ -42,13 +42,31 @@ services:
         - NODE_ENV=development
       target: dev
     ports:
-      - "3001:3000"
+      - "3002:3002"
     volumes:
       - ./products:/app/
     environment:
       - SERVICE=products
     env_file:
       - ./products/.env
+    depends_on:
+      - postgresql
+      - rabbitmq
+
+  orders:
+    build:
+      context: ./orders
+      args:
+        - NODE_ENV=development
+      target: dev
+    ports:
+      - "3003:3003"
+    volumes:
+      - ./orders:/app/
+    environment:
+      - SERVICE=orders
+    env_file:
+      - ./orders/.env
     depends_on:
       - postgresql
       - rabbitmq
