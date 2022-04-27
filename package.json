@@ -1,0 +1,23 @@
+{
+  "name": "nodejs-microservices",
+  "version": "1.0.0",
+  "description": "Sample Node.js project to show how to create node apps with microservices architecture.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArjanAswal/nodejs-microservices.git"
+  },
+  "keywords": [
+    "nodejs",
+    "microservices"
+  ],
+  "author": "Arjan Aswal",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/ArjanAswal/nodejs-microservices/issues"
+  },
+  "homepage": "https://github.com/ArjanAswal/nodejs-microservices#readme"
+}

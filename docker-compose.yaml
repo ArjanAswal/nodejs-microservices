@@ -1,0 +1,51 @@
+version: '2.4'
+
+services:
+
+  postgresql:
+    image: postgres:14-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  rabbitmq:
+    image: rabbitmq:3.10-rc-alpine
+    ports:
+      # AMQP protocol port
+      - "5672:5672"
+      # HTTP management UI
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=myuser
+      - RABBITMQ_DEFAULT_PASS=mypassword
+
+  products:
+    build:
+      context: ./products
+      args:
+        - NODE_ENV=development
+      target: dev
+    ports:
+      - "3001:3000"
+      # debug port
+      - "9229:9229"
+    volumes:
+      - ./products:/app/
+    environment:
+      - SERVICE=products
+    env_file:
+      - ./products/.env
+    healthcheck:
+      disable: true
+    depends_on:
+      - postgresql
+      - rabbitmq
+
+volumes:
+  data:
+
+
